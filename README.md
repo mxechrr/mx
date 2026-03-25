@@ -21,5 +21,3 @@ If you’re interested in a beat for a commercial or non-profit project:
 1. Contact me via **Instagram DM** ([@youshouldknowmax](https://www.instagram.com/youshouldknowmax)) or by **email** ([prods.yskm@gmail.com](mailto:prods.yskm@gmail.com)).
 2. Specify the title of the beat and the intended use.
 3. I will send you the rates (MP3, WAV, separate tracks/stems) and the licence agreement.
-
-Translated with DeepL.com (free version)
