@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MX | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+
+    <div class="sticker-container-grunge scotch-effect">
+        <img src="img/logo.png" alt="MX Logo Sticker" class="logo-sticker-grunge">
+    </div>
+
+    <header>
+        <h1 id="main-title">MX</h1>
+        <p>Beatmaker - Producer</p>
+
+        <div class="contact-bar">
+            <a href="https://www.instagram.com/youshouldknowmax" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://soundcloud.com/youshouldknowmax" target="_blank" title="Soundcloud"><i class="fab fa-soundcloud"></i></a>
+            <a href="mailto:prods.yskm@gmail.com" title="Envoyer un mail"><i class="fas fa-envelope"></i></a>
+        </div>
+    </header>
+
+    <div class="container" id="beats-container"></div>
+
+    <footer>
+        © 2026 CHARRIER Maxime. Tous droits réservés.
+    </footer>
+
+    <script>
+
+        const maPlaylist = [
+		
+            { title: "I MISS U", tag: "NEW JAZZ", bpm: 140, key: "B Min", year: 2026, file: "audio/imissu.mp3" },
+            { title: "I WANT U", tag: "NEW JAZZ", bpm: 115, key: "D Min", year: 2026, file: "audio/iwantu.mp3" },
+            { title: "OUTSIDE", tag: "HOODTRAP", bpm: 145, key: "D Min", year: 2026, file: "audio/outside.mp3" },
+            { title: "PESTO VERDE", tag: "MX TYPE", bpm: 140, key: "E Min", year: 2026, file: "audio/pesto.mp3" },
+            { title: "PLEASE TELL ME", tag: "HYPERPOP", bpm: 140, key: "C# Min", year: 2026, file: "audio/pleasetellme.mp3" },
+            { title: "PSYCHOSE", tag: "JERSEY", bpm: 143, key: "F# Min", year: 2026, file: "audio/psychose.mp3" },
+			
+            { title: "ANYMORE", tag: "2STEP", bpm: 125, key: "A# Min", year: 2025, file: "audio/anymore.mp3" },
+            { title: "CHAMPS DE MARS", tag: "R&B", bpm: 113, key: "G Min", year: 2025, file: "audio/champs.mp3" },
+            { title: "FINAL", tag: "TRAP", bpm: 127, key: "D# Min", year: 2025, file: "audio/final.mp3" },
+            { title: "MISERY", tag: "MX TYPE", bpm: 140, key: "A# Min", year: 2025, file: "audio/misery.mp3" },
+            { title: "NOKIA", tag: "2STEP", bpm: 125, key: "G# Min", year: 2025, file: "audio/nokia.mp3" },
+            { title: "TIMBALAND", tag: "2000'S", bpm: 100, key: "B Min", year: 2025, file: "audio/timbaland.mp3" },
+            { title: "20TH CENTURY BOYS", tag: "NEW JAZZ", bpm: 140, key: "F# Min", year: 2025, file: "audio/boys.mp3" },
+			
+ 
+       ];
+
+        const container = document.getElementById('beats-container');
+
+        maPlaylist.forEach((beat, index) => {
+            const card = document.createElement('div');
+            card.classList.add('beat-card');
+
+            card.innerHTML = `
+                <div class="beat-info">
+                    <h2 class="beat-title">${beat.title}</h2>
+                    <span class="beat-tag">${beat.tag}</span>
+                </div>
+                <p class="beat-details">${beat.bpm} BPM • ${beat.key} • ${beat.year}</p>
+                
+                <div class="custom-audio-player">
+                    <audio id="audio-${index}" src="${beat.file}" preload="metadata"></audio>
+                    <button class="player-btn" id="play-btn-${index}">▶</button>
+                    <div class="timeline-container" id="timeline-container-${index}">
+                        <div class="timeline-bar" id="timeline-bar-${index}"></div>
+                    </div>
+                    <span class="time-display" id="time-display-${index}">0:00</span>
+                </div>
+            `;
+
+            container.appendChild(card);
+
+            const audio = document.getElementById(`audio-${index}`);
+            const playBtn = document.getElementById(`play-btn-${index}`);
+            const timelineContainer = document.getElementById(`timeline-container-${index}`);
+            const timelineBar = document.getElementById(`timeline-bar-${index}`);
+            const timeDisplay = document.getElementById(`time-display-${index}`);
+
+            playBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    document.querySelectorAll('audio').forEach(otherAudio => {
+                        if(otherAudio !== audio) {
+                            otherAudio.pause();
+                            const otherBtn = otherAudio.nextElementSibling;
+                            if (otherBtn) {
+                                otherBtn.textContent = "▶";
+                                otherBtn.classList.remove('playing');
+                            }
+                        }
+                    });
+
+                    audio.play();
+                    playBtn.textContent = "⏸";
+                    playBtn.classList.add('playing');
+                } else {
+                    audio.pause();
+                    playBtn.textContent = "▶";
+                    playBtn.classList.remove('playing');
+                }
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                timelineBar.style.width = `${progress}%`;
+
+                const minutes = Math.floor(audio.currentTime / 60);
+                const seconds = Math.floor(audio.currentTime % 60);
+                timeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            });
+
+            timelineContainer.addEventListener('mousedown', (e) => {
+                const rect = timelineContainer.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                audio.currentTime = (x / rect.width) * audio.duration;
+            });
+        });
+
+        const cursor = document.getElementById('custom-cursor');
+
+        window.addEventListener('mousemove', (e) => {
+            if (cursor.style.display === 'none') {
+                cursor.style.display = 'block';
+            }
+
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            createTrailParticle(e.clientX + window.scrollX, e.clientY + window.scrollY);
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursor.style.display = 'none';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            cursor.style.display = 'block';
+        });
+
+        window.addEventListener('mousedown', () => cursor.classList.add('click-effect'));
+        window.addEventListener('mouseup', () => cursor.classList.remove('click-effect'));
+
+        function createTrailParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.classList.add('trail');
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 150);
+        }
+
+        const titleHTML = document.getElementById('main-title');
+
+        function createTitleParticle() {
+            const rect = titleHTML.getBoundingClientRect();
+            
+            if (rect.bottom < 0 || rect.top > window.innerHeight) {
+                return;
+            }
+
+            const particle = document.createElement('div');
+            particle.classList.add('title-particle');
+            
+            const randomX = rect.left + window.scrollX + (Math.random() * rect.width);
+            const randomY = rect.top + window.scrollY + (Math.random() * rect.height);
+            
+            particle.style.left = randomX + 'px';
+            particle.style.top = randomY + 'px';
+            
+            const sizes = ['3px', '5px', '7px']; 
+            particle.style.width = sizes[Math.floor(Math.random() * sizes.length)];
+            particle.style.height = particle.style.width;
+            
+            const colors = ['#e0ffcd', '#abffdd']; 
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 2000);
+        }
+
+        setInterval(createTitleParticle, 150);
+    </script>
+</body>
+</html>
