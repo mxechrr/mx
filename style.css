@@ -1,27 +1,22 @@
 :root {
     --bg-color: #000000; 
-
-    /* Fond de carte : Turquoise très discret (8% d'opacité) sans aucun jaune */
-    --card-bg: rgba(171, 255, 221, 0.08); 
-
-    --accent-color: #e0ffcd; /* Lime Clair (Peau de l'avatar) */
+    --accent-color: #e0ffcd; 
     --text-color: #ffffff; 
-    --text-muted: #abffdd; /* Lime-Turquoise (Spirales de l'avatar) */
+    --text-muted: #abffdd; 
 }
 
-   ========================================================== */
 html {
-    scrollbar-width: none; /* Pour Firefox */
-    -ms-overflow-style: none; /* Pour Internet Explorer / Edge ancien */
-    touch-action: manipulation; /* Bloque le double-tap-to-zoom sur smartphone */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    touch-action: manipulation;
 }
 
 html::-webkit-scrollbar {
-    display: none; /* Pour Chrome, Safari et Edge moderne */
+    display: none;
 }
 
 *, *::before, *::after {
-    cursor: none !important; /* Aucun élément ne fera réapparaître la souris par défaut */
+    cursor: none !important;
 }
 
 body {
@@ -34,19 +29,17 @@ body {
     align-items: center;
     min-height: 100vh;
     box-sizing: border-box;
-    
     width: 100%;
     max-width: 100vw; 
     overflow-x: hidden; 
 
     background-color: var(--bg-color);
-    
     background-image: 
         linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
         url('img/background.gif'); 
         
     background-repeat: no-repeat;
-    background-attachment: fixed; /* Le fond reste fixe au scroll */
+    background-attachment: fixed;
     background-position: center center; 
     background-size: cover; 
     
@@ -54,7 +47,7 @@ body {
     image-rendering: crisp-edges;
 }
 
-
+/* Sticker Logo & Scotch */
 .sticker-container-grunge {
     position: absolute; 
     top: 30px; 
@@ -66,7 +59,6 @@ body {
 .logo-sticker-grunge {
     width: 110px; 
     height: auto;
-    
     background-color: #ffffff; 
     padding: 8px; 
     transform: rotate(-18deg); 
@@ -80,7 +72,6 @@ body {
     opacity: 0.95;
     image-rendering: auto; 
 }
-
 
 .scotch-effect::after {
     content: ""; 
@@ -101,9 +92,10 @@ body {
     filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5)); 
 }
 
+/* Header */
 header {
     text-align: center;
-    padding: 4rem 1rem;
+    padding: 2.5rem 1rem 1rem 1rem;
     width: 100%;
     box-sizing: border-box;
     background: none; 
@@ -113,7 +105,6 @@ header h1 {
     display: block; 
     width: fit-content; 
     margin: 0 auto; 
-    
     font-size: 4rem;
     color: var(--accent-color);
     text-transform: uppercase;
@@ -132,7 +123,7 @@ header p {
 }
 
 .contact-bar {
-    margin-top: 1.5rem;
+    margin-top: 1.2rem;
     display: flex;
     justify-content: center;
     gap: 1.5rem; 
@@ -143,7 +134,7 @@ header p {
     font-size: 1.8rem; 
     transition: all 0.3s ease;
     text-decoration: none;
-    touch-action: manipulation; /* Évite la latence du clic sur tactile */
+    touch-action: manipulation;
 }
 
 .contact-bar a:hover {
@@ -152,111 +143,267 @@ header p {
     text-shadow: 0 0 10px var(--accent-color); 
 }
 
-.container {
-    width: 90%;
-    max-width: 1100px; 
-    margin: 2rem 0;
-    flex-grow: 1; 
-
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 2rem; 
+/* CARROUSEL CD CENTRAL */
+.carousel-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1000px;
+    margin: 1rem auto 2rem auto;
+    flex-grow: 1;
 }
 
-
-@media (max-width: 800px) {
-    /* Cache le curseur PC sur mobile car il y a le doigt à la place */
-    #custom-cursor {
-        display: none !important;
-    }
-
-    .container {
-        grid-template-columns: 1fr; /* 1 seule colonne par carte */
-        gap: 1.5rem;
-        width: 95%; /* Plus de place pour les cartes */
-    }
-
-    /* On réduit la taille du titre MX sur mobile */
-    header h1 {
-        font-size: 3rem; 
-    }
-
-    header {
-        padding: 3rem 1rem 2rem 1rem;
-    }
-
-    .sticker-container-grunge {
-        top: 15px;
-        left: 15px;
-    }
-
-    .logo-sticker-grunge {
-        width: 70px; /* Plus petit */
-        padding: 6px;
-    }
-
-    .scotch-effect::after {
-        width: 80px; /* Plus petit */
-        height: 20px;
-        top: -5px;
-        right: -10px;
-    }
-
-    .contact-bar {
-        gap: 2rem;
-    }
-
-    .contact-bar a {
-        font-size: 2.2rem; /* Légèrement plus gros pour cliquer au doigt plus facilement */
-    }
-
-    /* Le custom player s'empile verticalement si l'écran est minuscule */
-    @media (max-width: 400px) {
-        .custom-audio-player {
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .timeline-container {
-            width: 100%;
-            order: 3; /* Passe en bas */
-            margin-top: 10px;
-        }
-    }
+.cd-carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 480px;
+    perspective: 1000px;
 }
 
-
-.beat-card {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 1.5rem;
+/* Éléments CD */
+.cd-card {
+    position: absolute;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; 
-    gap: 1.2rem;
-    
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(171, 255, 221, 0.15); 
-    border-left: 5px solid var(--accent-color); 
-    
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    will-change: transform, box-shadow; 
+    align-items: center;
+    gap: 1rem;
+    box-sizing: border-box;
+    transition: filter 0.3s ease, opacity 0.4s ease;
 }
 
-.beat-card:hover {
-    transform: translateY(-10px) scale(1.01); 
-    box-shadow: 0 15px 45px rgba(224, 255, 205, 0.2); 
-    background-color: rgba(171, 255, 221, 0.15); 
-    border-color: rgba(224, 255, 205, 0.4); 
+/* Disque CD circulaire */
+.cd-disc-wrapper {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
 }
 
-.beat-info {
+.cd-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Overlay Irisé type Sony CD-R */
+.sony-cd-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    pointer-events: none;
+    
+    background: 
+        radial-gradient(circle, 
+            transparent 0%,
+            transparent 16%,
+            rgba(255, 255, 255, 0.95) 16.5%,
+            rgba(240, 240, 240, 0.3) 18%,
+            transparent 27%,
+            transparent 68%,
+            rgba(255, 255, 255, 0.4) 98%,
+            rgba(180, 180, 180, 0.8) 100%
+        ),
+        conic-gradient(
+            from 45deg,
+            rgba(255, 0, 0, 0.15),
+            rgba(255, 165, 0, 0.15),
+            rgba(255, 255, 0, 0.15),
+            rgba(0, 128, 0, 0.15),
+            rgba(0, 0, 255, 0.15),
+            rgba(238, 130, 238, 0.15),
+            rgba(255, 0, 0, 0.15)
+        );
+}
+
+.sony-cd-overlay::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 17%;
+    height: 17%;
+    border-radius: 50%;
+    background-color: var(--bg-color);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
+}
+
+/* Animation Lévitation */
+@keyframes levitate {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* CD Central Actif */
+.cd-center {
+    width: 340px;
+    opacity: 1;
+    z-index: 10;
+    animation: levitate 4s ease-in-out infinite;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Survol : Se relève + s'éclaircit */
+.cd-center:hover {
+    animation-play-state: paused;
+    transform: translateY(-14px) scale(1.02);
+    filter: brightness(1.2);
+}
+
+.cd-center .beat-info {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+.cd-center .beat-details {
+    width: 100%;
+    text-align: left;
+}
+
+.cd-center .custom-audio-player {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Animations Swipe au changement de son */
+.swipe-out-left {
+    animation: swipeOutLeft 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.swipe-out-right {
+    animation: swipeOutRight 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.swipe-in-right {
+    animation: swipeInRight 0.3s forwards cubic-bezier(0, 0, 0.2, 1) !important;
+}
+
+.swipe-in-left {
+    animation: swipeInLeft 0.3s forwards cubic-bezier(0, 0, 0.2, 1) !important;
+}
+
+@keyframes swipeOutLeft {
+    to {
+        transform: translateX(-160px) rotate(-12deg) scale(0.85);
+        opacity: 0;
+    }
+}
+
+@keyframes swipeOutRight {
+    to {
+        transform: translateX(160px) rotate(12deg) scale(0.85);
+        opacity: 0;
+    }
+}
+
+@keyframes swipeInRight {
+    from {
+        transform: translateX(160px) rotate(12deg) scale(0.85);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes swipeInLeft {
+    from {
+        transform: translateX(-160px) rotate(-12deg) scale(0.85);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+/* CD Latéraux (Opacité faible) */
+.cd-side {
+    width: 200px;
+    opacity: 0.35;
+    filter: blur(1px) grayscale(30%);
+    cursor: pointer !important;
+    z-index: 5;
+}
+
+.cd-side:hover {
+    opacity: 0.65;
+    filter: blur(0px) grayscale(0%);
+}
+
+.cd-left {
+    transform: translateX(-260px) scale(0.8);
+}
+
+.cd-right {
+    transform: translateX(260px) scale(0.8);
+}
+
+.cd-mini-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Boutons Flèches */
+.nav-btn {
+    background-color: transparent;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    touch-action: manipulation;
+    z-index: 20;
+}
+
+.nav-btn:hover {
+    background-color: var(--accent-color);
+    color: #000000;
+    transform: scale(1.15);
+    box-shadow: 0 0 15px var(--accent-color);
+}
+
+/* Titre & Informations */
 .beat-title {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 800;
     margin: 0;
     letter-spacing: 1px;
@@ -266,33 +413,27 @@ header p {
     background-color: transparent;
     border: 2px solid var(--accent-color);
     color: var(--accent-color);
-    padding: 0.4rem 1rem;
+    padding: 0.3rem 0.8rem;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: bold;
     letter-spacing: 1px;
-    transition: all 0.3s ease;
-}
-
-.beat-card:hover .beat-tag {
-    background-color: var(--accent-color);
-    color: #000000;
 }
 
 .beat-details {
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     margin: 0;
     font-family: 'Courier New', Courier, monospace; 
 }
 
-
+/* Lecteur Audio */
 .custom-audio-player {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    background-color: #1a1a1a;
-    padding: 1rem;
+    gap: 0.8rem;
+    background-color: rgba(26, 26, 26, 0.85);
+    padding: 0.8rem;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -302,9 +443,10 @@ header p {
     color: #000;
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -337,14 +479,15 @@ header p {
 
 .time-display {
     font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
-    min-width: 40px;
+    min-width: 38px;
     text-align: right;
 }
 
+/* Footer & Curseur */
 footer {
-    padding: 2rem;
+    padding: 1.5rem;
     color: var(--text-muted);
     font-size: 0.9rem;
     width: 100%;
@@ -398,12 +541,36 @@ footer {
 }
 
 @keyframes titleParticleFloat {
-    0% {
-        transform: translate(-50%, -50%) translateY(0);
-        opacity: 0.6; 
+    0% { transform: translate(-50%, -50%) translateY(0); opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) translateY(-25px) scale(0.1); opacity: 0; }
+}
+
+@media (max-width: 800px) {
+    #custom-cursor {
+        display: none !important;
     }
-    100% {
-        transform: translate(-50%, -50%) translateY(-25px) scale(0.1);
-        opacity: 0;
+
+    .cd-side {
+        display: none;
+    }
+
+    .cd-center {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .carousel-wrapper {
+        gap: 0.5rem;
+    }
+
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        font-size: 1.1rem;
+    }
+
+    header h1 {
+        font-size: 3rem; 
     }
 }
