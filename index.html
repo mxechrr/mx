@@ -26,78 +26,121 @@
         </div>
     </header>
 
-    <div class="container" id="beats-container"></div>
+    <main class="carousel-wrapper">
+        <button class="nav-btn prev-btn" id="prev-btn" aria-label="Son précédent">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="cd-carousel-container" id="carousel-container">
+            <!-- Injecté dynamiquement par JavaScript -->
+        </div>
+
+        <button class="nav-btn next-btn" id="next-btn" aria-label="Son suivant">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </main>
 
     <footer>
         © 2026 CHARRIER Maxime. Tous droits réservés.
     </footer>
 
     <script>
-
         const maPlaylist = [
-		
-            { title: "I MISS U", tag: "NEW JAZZ", bpm: 140, key: "B Min", year: 2026, file: "audio/imissu.mp3" },
-            { title: "I WANT U", tag: "NEW JAZZ", bpm: 115, key: "D Min", year: 2026, file: "audio/iwantu.mp3" },
-            { title: "OUTSIDE", tag: "HOODTRAP", bpm: 145, key: "D Min", year: 2026, file: "audio/outside.mp3" },
-            { title: "PESTO VERDE", tag: "MX TYPE", bpm: 140, key: "E Min", year: 2026, file: "audio/pesto.mp3" },
-            { title: "PLEASE TELL ME", tag: "HYPERPOP", bpm: 140, key: "C# Min", year: 2026, file: "audio/pleasetellme.mp3" },
-            { title: "PSYCHOSE", tag: "JERSEY", bpm: 143, key: "F# Min", year: 2026, file: "audio/psychose.mp3" },
-			
-            { title: "ANYMORE", tag: "2STEP", bpm: 125, key: "A# Min", year: 2025, file: "audio/anymore.mp3" },
-            { title: "CHAMPS DE MARS", tag: "R&B", bpm: 113, key: "G Min", year: 2025, file: "audio/champs.mp3" },
-            { title: "FINAL", tag: "TRAP", bpm: 127, key: "D# Min", year: 2025, file: "audio/final.mp3" },
-            { title: "MISERY", tag: "MX TYPE", bpm: 140, key: "A# Min", year: 2025, file: "audio/misery.mp3" },
-            { title: "NOKIA", tag: "2STEP", bpm: 125, key: "G# Min", year: 2025, file: "audio/nokia.mp3" },
-            { title: "TIMBALAND", tag: "2000'S", bpm: 100, key: "B Min", year: 2025, file: "audio/timbaland.mp3" },
-            { title: "20TH CENTURY BOYS", tag: "NEW JAZZ", bpm: 140, key: "F# Min", year: 2025, file: "audio/boys.mp3" },
-			
- 
-       ];
+            { title: "I MISS U", tag: "NEW JAZZ", bpm: 140, key: "B Min", year: 2026, file: "audio/imissu.mp3", cover: "img/imissu.jpg" },
+            { title: "I WANT U", tag: "NEW JAZZ", bpm: 115, key: "D Min", year: 2026, file: "audio/iwantu.mp3", cover: "img/iwantu.jpg" },
+            { title: "OUTSIDE", tag: "HOODTRAP", bpm: 145, key: "D Min", year: 2026, file: "audio/outside.mp3", cover: "img/outside.jpg" },
+            { title: "PESTO VERDE", tag: "MX TYPE", bpm: 140, key: "E Min", year: 2026, file: "audio/pesto.mp3", cover: "img/pesto.jpg" },
+            { title: "PLEASE TELL ME", tag: "HYPERPOP", bpm: 140, key: "C# Min", year: 2026, file: "audio/pleasetellme.mp3", cover: "img/pleasetellme.jpg" },
+            { title: "PSYCHOSE", tag: "JERSEY", bpm: 143, key: "F# Min", year: 2026, file: "audio/psychose.mp3", cover: "img/psychose.jpg" },
+            { title: "ANYMORE", tag: "2STEP", bpm: 125, key: "A# Min", year: 2025, file: "audio/anymore.mp3", cover: "img/anymore.jpg" },
+            { title: "CHAMPS DE MARS", tag: "R&B", bpm: 113, key: "G Min", year: 2025, file: "audio/champs.mp3", cover: "img/champs.jpg" },
+            { title: "FINAL", tag: "TRAP", bpm: 127, key: "D# Min", year: 2025, file: "audio/final.mp3", cover: "img/final.jpg" },
+            { title: "MISERY", tag: "MX TYPE", bpm: 140, key: "A# Min", year: 2025, file: "audio/misery.mp3", cover: "img/misery.jpg" },
+            { title: "NOKIA", tag: "2STEP", bpm: 125, key: "G# Min", year: 2025, file: "audio/nokia.mp3", cover: "img/nokia.jpg" },
+            { title: "TIMBALAND", tag: "2000'S", bpm: 100, key: "B Min", year: 2025, file: "audio/timbaland.mp3", cover: "img/timbaland.jpg" },
+            { title: "20TH CENTURY BOYS", tag: "NEW JAZZ", bpm: 140, key: "F# Min", year: 2025, file: "audio/boys.mp3", cover: "img/boys.jpg" }
+        ];
 
-        const container = document.getElementById('beats-container');
+        let currentIndex = 0;
+        let isAnimating = false;
+        const carouselContainer = document.getElementById('carousel-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
 
-        maPlaylist.forEach((beat, index) => {
-            const card = document.createElement('div');
-            card.classList.add('beat-card');
+        function getIndex(offset) {
+            return (currentIndex + offset + maPlaylist.length) % maPlaylist.length;
+        }
 
-            card.innerHTML = `
-                <div class="beat-info">
-                    <h2 class="beat-title">${beat.title}</h2>
-                    <span class="beat-tag">${beat.tag}</span>
-                </div>
-                <p class="beat-details">${beat.bpm} BPM • ${beat.key} • ${beat.year}</p>
-                
-                <div class="custom-audio-player">
-                    <audio id="audio-${index}" src="${beat.file}" preload="metadata"></audio>
-                    <button class="player-btn" id="play-btn-${index}">▶</button>
-                    <div class="timeline-container" id="timeline-container-${index}">
-                        <div class="timeline-bar" id="timeline-bar-${index}"></div>
+        function renderCarousel(animationClass = '') {
+            const prevIndex = getIndex(-1);
+            const currIndex = currentIndex;
+            const nextIndex = getIndex(1);
+
+            const prevBeat = maPlaylist[prevIndex];
+            const currBeat = maPlaylist[currIndex];
+            const nextBeat = maPlaylist[nextIndex];
+
+            carouselContainer.innerHTML = `
+                <!-- CD Gauche -->
+                <div class="cd-card cd-side cd-left" id="card-left">
+                    <div class="cd-disc-wrapper">
+                        <img src="${prevBeat.cover}" alt="${prevBeat.title}" class="cd-cover-img" onerror="this.src='img/logo.png'">
+                        <div class="sony-cd-overlay"></div>
                     </div>
-                    <span class="time-display" id="time-display-${index}">0:00</span>
+                    <div class="cd-mini-title">${prevBeat.title}</div>
+                </div>
+
+                <!-- CD Central (Actif) -->
+                <div class="cd-card cd-center ${animationClass}" id="card-center">
+                    <div class="cd-disc-wrapper">
+                        <img src="${currBeat.cover}" alt="${currBeat.title}" class="cd-cover-img" onerror="this.src='img/logo.png'">
+                        <div class="sony-cd-overlay"></div>
+                    </div>
+                    
+                    <div class="beat-info">
+                        <h2 class="beat-title">${currBeat.title}</h2>
+                        <span class="beat-tag">${currBeat.tag}</span>
+                    </div>
+                    
+                    <p class="beat-details">${currBeat.bpm} BPM • ${currBeat.key} • ${currBeat.year}</p>
+                    
+                    <div class="custom-audio-player">
+                        <audio id="current-audio" src="${currBeat.file}" preload="metadata"></audio>
+                        <button class="player-btn" id="current-play-btn">▶</button>
+                        <div class="timeline-container" id="current-timeline">
+                            <div class="timeline-bar" id="current-progress"></div>
+                        </div>
+                        <span class="time-display" id="current-time">0:00</span>
+                    </div>
+                </div>
+
+                <!-- CD Droite -->
+                <div class="cd-card cd-side cd-right" id="card-right">
+                    <div class="cd-disc-wrapper">
+                        <img src="${nextBeat.cover}" alt="${nextBeat.title}" class="cd-cover-img" onerror="this.src='img/logo.png'">
+                        <div class="sony-cd-overlay"></div>
+                    </div>
+                    <div class="cd-mini-title">${nextBeat.title}</div>
                 </div>
             `;
 
-            container.appendChild(card);
+            setupAudioListeners();
 
-            const audio = document.getElementById(`audio-${index}`);
-            const playBtn = document.getElementById(`play-btn-${index}`);
-            const timelineContainer = document.getElementById(`timeline-container-${index}`);
-            const timelineBar = document.getElementById(`timeline-bar-${index}`);
-            const timeDisplay = document.getElementById(`time-display-${index}`);
+            document.getElementById('card-left').addEventListener('click', prevTrack);
+            document.getElementById('card-right').addEventListener('click', nextTrack);
+        }
+
+        function setupAudioListeners() {
+            const audio = document.getElementById('current-audio');
+            const playBtn = document.getElementById('current-play-btn');
+            const timelineContainer = document.getElementById('current-timeline');
+            const timelineBar = document.getElementById('current-progress');
+            const timeDisplay = document.getElementById('current-time');
+
+            if (!audio) return;
 
             playBtn.addEventListener('click', () => {
                 if (audio.paused) {
-                    document.querySelectorAll('audio').forEach(otherAudio => {
-                        if(otherAudio !== audio) {
-                            otherAudio.pause();
-                            const otherBtn = otherAudio.nextElementSibling;
-                            if (otherBtn) {
-                                otherBtn.textContent = "▶";
-                                otherBtn.classList.remove('playing');
-                            }
-                        }
-                    });
-
                     audio.play();
                     playBtn.textContent = "⏸";
                     playBtn.classList.add('playing');
@@ -109,42 +152,67 @@
             });
 
             audio.addEventListener('timeupdate', () => {
-                const progress = (audio.currentTime / audio.duration) * 100;
-                timelineBar.style.width = `${progress}%`;
+                if (!isNaN(audio.duration)) {
+                    const progress = (audio.currentTime / audio.duration) * 100;
+                    timelineBar.style.width = `${progress}%`;
 
-                const minutes = Math.floor(audio.currentTime / 60);
-                const seconds = Math.floor(audio.currentTime % 60);
-                timeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                    const minutes = Math.floor(audio.currentTime / 60);
+                    const seconds = Math.floor(audio.currentTime % 60);
+                    timeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                }
             });
 
-            timelineContainer.addEventListener('mousedown', (e) => {
+            timelineContainer.addEventListener('click', (e) => {
                 const rect = timelineContainer.getBoundingClientRect();
                 const x = e.clientX - rect.left;
-                audio.currentTime = (x / rect.width) * audio.duration;
+                if (!isNaN(audio.duration)) {
+                    audio.currentTime = (x / rect.width) * audio.duration;
+                }
             });
-        });
+        }
 
+        function changeTrack(direction) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const currentCard = document.getElementById('card-center');
+            const outClass = direction === 'next' ? 'swipe-out-left' : 'swipe-out-right';
+            const inClass = direction === 'next' ? 'swipe-in-right' : 'swipe-in-left';
+
+            currentCard.classList.add(outClass);
+
+            setTimeout(() => {
+                currentIndex = direction === 'next' ? getIndex(1) : getIndex(-1);
+                renderCarousel(inClass);
+                
+                setTimeout(() => {
+                    const newCard = document.getElementById('card-center');
+                    if (newCard) newCard.classList.remove(inClass);
+                    isAnimating = false;
+                }, 300);
+            }, 250);
+        }
+
+        function prevTrack() { changeTrack('prev'); }
+        function nextTrack() { changeTrack('next'); }
+
+        prevBtn.addEventListener('click', prevTrack);
+        nextBtn.addEventListener('click', nextTrack);
+
+        renderCarousel();
+
+        /* --- CURSEUR ET PARTICULES --- */
         const cursor = document.getElementById('custom-cursor');
 
         window.addEventListener('mousemove', (e) => {
-            if (cursor.style.display === 'none') {
-                cursor.style.display = 'block';
-            }
-
+            if (cursor.style.display === 'none') cursor.style.display = 'block';
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-            
             createTrailParticle(e.clientX + window.scrollX, e.clientY + window.scrollY);
         });
 
-        document.addEventListener('mouseleave', () => {
-            cursor.style.display = 'none';
-        });
-
-        document.addEventListener('mouseenter', () => {
-            cursor.style.display = 'block';
-        });
-
+        document.addEventListener('mouseleave', () => cursor.style.display = 'none');
+        document.addEventListener('mouseenter', () => cursor.style.display = 'block');
         window.addEventListener('mousedown', () => cursor.classList.add('click-effect'));
         window.addEventListener('mouseup', () => cursor.classList.remove('click-effect'));
 
@@ -155,19 +223,14 @@
             particle.style.top = y + 'px';
             document.body.appendChild(particle);
 
-            setTimeout(() => {
-                particle.remove();
-            }, 150);
+            setTimeout(() => particle.remove(), 150);
         }
 
         const titleHTML = document.getElementById('main-title');
 
         function createTitleParticle() {
             const rect = titleHTML.getBoundingClientRect();
-            
-            if (rect.bottom < 0 || rect.top > window.innerHeight) {
-                return;
-            }
+            if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
             const particle = document.createElement('div');
             particle.classList.add('title-particle');
@@ -187,9 +250,7 @@
             
             document.body.appendChild(particle);
 
-            setTimeout(() => {
-                particle.remove();
-            }, 2000);
+            setTimeout(() => particle.remove(), 2000);
         }
 
         setInterval(createTitleParticle, 150);
